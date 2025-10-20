@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Colors } from '../Utils/Theme';
+import pessoa from '../assets/pessoa.png';
 
 const SecurityScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [username, setUsername] = useState('Usuario');
   const navigation = useNavigation();
 
   const handleSave = () => {
@@ -19,7 +22,16 @@ const SecurityScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Segurança</Text>
+      <View style={styles.userAvatar}>
+        <Image source={pessoa} style={styles.avatarImage} />
+      </View>
+      <TextInput
+        style={styles.username}
+        value={username}
+        onChangeText={setUsername}
+        editable
+        placeholder="Digite seu nome"
+      />
 
       <View style={styles.formGroup}>
         <Text style={styles.label}>E-mail</Text>
@@ -73,12 +85,28 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#FFFFFF',
   },
-  title: {
-    fontSize: 24,
+  userAvatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 2,
+    borderColor: Colors.purple,
+    alignSelf: 'center',
+    marginBottom: 20,
+    overflow: 'hidden',
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  username: {
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#8D7EFB',
-    marginBottom: 30,
+    color: '#333',
     textAlign: 'center',
+    marginBottom: 20,
   },
   formGroup: {
     marginBottom: 20,
@@ -129,6 +157,13 @@ const styles = StyleSheet.create({
     color: '#8D7EFB',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  username: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'center',
+    marginBottom: 20,
   },
 });
 
