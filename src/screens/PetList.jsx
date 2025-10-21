@@ -83,9 +83,11 @@ export default function PetList({ onUpdatePet }) {
           </View>
         </TouchableOpacity>
       ))}
-      <TouchableOpacity style={styles.addButton} onPress={handleAddPet}>
-        <Text style={styles.addButtonText}>Adicionar</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.addButton} onPress={handleAddPet}>
+          <Text style={styles.addButtonText}>Adicionar</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -143,7 +145,7 @@ const styles = StyleSheet.create({
   },
   arrow: { color: '#C49DF6', fontSize: 20, fontWeight: 'bold' },
   addButton: {
-    backgroundColor: '#A367F0', // Para gradiente, uma biblioteca como react-native-linear-gradient seria necessária
+    backgroundColor: '#A367F0',
     padding: 15,
     borderRadius: 15,
     alignItems: 'center',

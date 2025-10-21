@@ -5,8 +5,15 @@ import { Colors, CommonStyles } from '../Utils/Theme';
 
 const CadastroScreen = () => {
   const navigation = useNavigation(); // Obtenha o objeto de navegação
+  const [crmv, setCrmv] = useState('');
   const [name, setName] = useState('');
   const [userType, setUserType] = useState('usuario');
+
+  const handleCrmvChange = (text) => {
+    // Allow alphanumeric characters and hyphens for CRMV
+    const cleanedText = text.replace(/[^a-zA-Z0-9-]/g, '');
+    setCrmv(cleanedText);
+  };
 
   const handleNameChange = (text) => {
     // Remove all non-alphabetic characters
@@ -92,6 +99,21 @@ const CadastroScreen = () => {
           </TouchableOpacity>
         </View>
 
+        {userType === 'veterinario' && (
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>CRMV</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="CRMV"
+              placeholderTextColor={Colors.lightPurple}
+              value={crmv}
+              onChangeText={handleCrmvChange}
+              maxLength={15} // Limit CRMV to 15 characters
+              autoCapitalize="characters"
+            />
+          </View>
+        )}
+
         <View style={styles.formGroup}>
           <Text style={styles.label}>Nome</Text>
           <TextInput
@@ -118,18 +140,20 @@ const CadastroScreen = () => {
           />
         </View>
 
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Telefone</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="00 00000-0000"
-            placeholderTextColor={Colors.lightPurple}
-            keyboardType="phone-pad"
-            value={phone}
-            onChangeText={handlePhoneChange}
-            maxLength={12} // Limit phone to 11 digits
-          />
-        </View>
+        {userType === 'usuario' && (
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>Telefone</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="00 00000-0000"
+              placeholderTextColor={Colors.lightPurple}
+              keyboardType="phone-pad"
+              value={phone}
+              onChangeText={handlePhoneChange}
+              maxLength={12} // Limit phone to 11 digits
+            />
+          </View>
+        )}
 
         <View style={styles.formGroup}>
           <Text style={styles.label}>Senha</Text>

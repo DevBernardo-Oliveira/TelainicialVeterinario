@@ -138,9 +138,10 @@ function PetUserTabStack() {
   );
 }
 
-const UserTabNavigator = () => {
+const VeterinarianTabNavigator = () => {
   return (
     <Tab.Navigator
+      initialRouteName="Pet"
       screenOptions={{
         tabBarStyle: {
           height: 60,
@@ -160,6 +161,24 @@ const UserTabNavigator = () => {
         tabBarShowLabel: false,
       }}
     >
+
+      <Tab.Screen
+        name="Pet"
+        component={PetUserTabStack}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={iconePet}
+              style={{
+                width: size * 1.2,
+                height: size * 1.2,
+                tintColor: color,
+              }}
+              resizeMode="contain"
+            />
+          ),
+        }}
+      />
 
       <Tab.Screen
         name="Agenda"
@@ -189,24 +208,6 @@ const UserTabNavigator = () => {
               style={{
                 width: size,
                 height: size,
-                tintColor: color,
-              }}
-              resizeMode="contain"
-            />
-          ),
-        }}
-      />
-
-      <Tab.Screen
-        name="Pet"
-        component={PetUserTabStack}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Image
-              source={iconePet}
-              style={{
-                width: size * 1.2,
-                height: size * 1.2,
                 tintColor: color,
               }}
               resizeMode="contain"
@@ -254,4 +255,4 @@ const UserTabNavigator = () => {
   );
 };
 
-export default UserTabNavigator;
+export default VeterinarianTabNavigator;

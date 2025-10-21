@@ -5,15 +5,19 @@ import { Colors } from '../Utils/Theme';
 import { Ionicons } from '@expo/vector-icons';
 
 const ICON_IMAGES = {
-  Home: require('../assets/Calendario.png.png'),
-  Agenda: require('../assets/pet.png'),
+  Agenda: require('../assets/Calendario.png.png'),
   Chat: require('../assets/Chat.png.png'),
+  Home: require('../assets/pet.png'),
+  Veterinario: require('../assets/veterinario.png'),
+  Pessoa: require('../assets/pessoa.png'),
 };
 
 const TAB_ORDER = [
-  { name: 'Home', image: ICON_IMAGES.Home },
   { name: 'Agenda', image: ICON_IMAGES.Agenda },
   { name: 'Chat', image: ICON_IMAGES.Chat },
+  { name: 'Home', image: ICON_IMAGES.Home },
+  { name: 'Veterinario', image: ICON_IMAGES.Veterinario },
+  { name: 'Pessoa', image: ICON_IMAGES.Pessoa },
 ];
 
 export default function UserTabBar({ state, descriptors, navigation }) {
@@ -49,7 +53,14 @@ export default function UserTabBar({ state, descriptors, navigation }) {
             onPress={onPress}
             style={[styles.tabItem, isFocused && styles.activeTab]}
           >
-            <Image source={tab.image} style={{ width: widthPixel(24), height: heightPixel(24), tintColor: isFocused ? Colors.purple : Colors.mediumGray }} />
+            <Image
+              source={tab.image}
+              style={{
+                width: tab.name === 'Agenda' ? widthPixel(30) : widthPixel(24),
+                height: tab.name === 'Agenda' ? heightPixel(30) : heightPixel(24),
+                tintColor: isFocused ? Colors.purple : Colors.mediumGray,
+              }}
+            />
             <Text style={[styles.tabText, { color: isFocused ? Colors.purple : Colors.mediumGray }]}>{tab.name}</Text>
           </TouchableOpacity>
         );
