@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, Image } from 'react-native';
 // Recomenda-se usar uma biblioteca de ícones como react-native-vector-icons
 import Icon from 'react-native-vector-icons/FontAwesome5'; // Ou similar
 import DeleteConfirmationModal from '../components/DeleteConfirmationModal';
 import { Colors, CommonStyles } from '../Utils/Theme';
+import iconeHome from '../assets/icone.png'; // Importando icone.png
+import iconeEngrenagem from '../assets/engrenagem.png'; // Importando engrenagem.png
+import iconeVeterinario from '../assets/veterinario.png'; // Importando veterinario.png
+import iconeLixo from '../assets/Lixopng.png'; // Importando Lixopng.png
 
 // --- Definições de Cores ---
 const COLORS = {
@@ -15,7 +19,7 @@ const COLORS = {
   avatarBg: Colors.veryLightPurple, // Branco-rosado claro do círculo superior
 };
 // --- Componente de Item de Menu ---
-const MenuItem = ({ iconName, text, isDelete = false, onPress }) => (
+const MenuItem = ({ iconName, text, isDelete = false, onPress, imageSource }) => (
   <TouchableOpacity 
     style={[
       styles.menuItem,
@@ -23,14 +27,18 @@ const MenuItem = ({ iconName, text, isDelete = false, onPress }) => (
     ]}
     onPress={onPress} // Agora usa a prop onPress
   >
-    <Icon 
-      name={iconName} 
-      size={20} 
-      style={[
-        styles.icon,
-        { color: isDelete ? COLORS.delete : COLORS.iconSafe }
-      ]}
-    />
+    {imageSource ? (
+      <Image source={imageSource} style={[styles.icon, styles.imageIcon, { tintColor: isDelete ? COLORS.delete : COLORS.iconSafe }]} />
+    ) : (
+      <Icon 
+        name={iconName} 
+        size={20} 
+        style={[
+          styles.icon,
+          { color: isDelete ? COLORS.delete : COLORS.iconSafe }
+        ]}
+      />
+    )}
     <Text 
       style={[
         styles.menuText,
@@ -66,14 +74,15 @@ const ConfigurationScreen = () => {
 
       {/* Menu de Opções */}
       <View style={styles.menuContainer}>
-        <MenuItem iconName="fingerprint" text="Segurança" onPress={() => navigation.navigate('Security')} />
-        <MenuItem iconName="paw" text="Pets" onPress={() => navigation.navigate('Home') } />
-        <MenuItem iconName="calendar-alt" text="Consultas Agendadas" onPress={() => navigation.navigate('Veterinario', { screen: 'Consultas' })} />
+        <MenuItem iconName="fingerprint" text="Segurança" onPress={() => navigation.navigate('Security')} imageSource={iconeEngrenagem} />
+        <MenuItem iconName="paw" text="Pets" onPress={() => navigation.navigate('Pets')} imageSource={iconeHome} />
+        <MenuItem iconName="calendar-alt" text="Consultas Agendadas" onPress={() => navigation.navigate('Veterinario', { screen: 'Consultas' })} imageSource={iconeVeterinario} />
         <MenuItem 
           iconName="trash-alt" 
           text="Excluir Conta" 
           isDelete={true} 
           onPress={() => setModalVisible(true)} // Abre o modal
+          imageSource={iconeLixo}
         />
       </View>
 
@@ -136,6 +145,11 @@ const styles = StyleSheet.create({
     marginRight: 15,
     width: 24, // Garante que todos os ícones fiquem alinhados
     textAlign: 'center',
+  },
+  imageIcon: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
   },
   menuText: {
     flexGrow: 1,

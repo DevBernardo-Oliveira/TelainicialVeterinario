@@ -55,13 +55,18 @@ import React from 'react';
    modalContainer: { 
      width: '80%', 
      // Fundo totalmente transparente para o "quadrado" principal 
-     backgroundColor: 'transparent', 
+     backgroundColor: '#FFFFFF', // Alterado para branco para que o conteúdo fique dentro de um quadrado visível
      // A borda de 15 que você pediu 
      borderRadius: 15, 
      padding: 30, 
      alignItems: 'center', 
-     // **Importante:** Se o fundo é transparente, a sombra (shadow/elevation) não funcionará bem 
-     // A sombra deve ser aplicada aos elementos internos se desejar profundidade 
+     // **Importante:** Se o fundo é transparente, a sombra (shadow/elevation) não funcionará bem
+     // A sombra deve ser aplicada aos elementos internos se desejar profundidade
+     shadowColor: '#000',
+     shadowOffset: { width: 0, height: 2 },
+     shadowOpacity: 0.25,
+     shadowRadius: 4,
+     elevation: 5,
    }, 
    infoText: { 
      fontSize: 22, 
@@ -70,10 +75,10 @@ import React from 'react';
      textAlign: 'center', 
      marginBottom: 30, 
      lineHeight: 30, 
-     // Se o fundo do modal é transparente, o texto pode precisar de um fundo 
-     backgroundColor: 'white', // Adiciona um fundo branco ao texto para ser legível (opcional) 
-     padding: 10, 
-     borderRadius: 8, 
+     // Se o fundo do modal é transparente, o texto pode precisar de um fundo
+     backgroundColor: 'transparent', // Removido o fundo branco do texto para que o modalContainer seja o único quadrado
+     padding: 0, // Removido o padding do texto, pois o modalContainer já tem padding
+     borderRadius: 0, 
    }, 
    buttonContainer: { 
      flexDirection: 'row', 

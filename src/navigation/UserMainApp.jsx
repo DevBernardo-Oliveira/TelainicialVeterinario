@@ -164,12 +164,12 @@ function MainTabs({ route }) {
       }}
     >
       <Tab.Screen
-        name="Home"
-        component={PetsStack} // Agora aponta para Meus Pets
+        name="Pets"
+        component={PetsStack} // Corrigido para apontar para PetsStack
         options={{
           tabBarIcon: ({ color, size }) => (
             <Image
-              source={iconeHome}
+              source={iconeHome} // Ícone invertido para Home
               style={{
                 width: size,
                 height: size,
@@ -200,12 +200,12 @@ function MainTabs({ route }) {
       />
 
       <Tab.Screen
-        name="Pets"
-        component={HomeTabStack} // Agora aponta para Home
+        name="Home"
+        component={HomeTabStack} // Corrigido para apontar para HomeTabStack
         options={{
           tabBarIcon: ({ color, size }) => (
             <Image
-              source={iconePet}
+              source={iconePet} // Ícone invertido para Pets
               style={{
                 width: size,
                 height: size,

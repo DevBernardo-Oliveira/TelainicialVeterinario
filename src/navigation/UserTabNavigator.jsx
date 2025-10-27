@@ -18,6 +18,7 @@ import SecurityScreen from '../screens/SecurityScreen';
 import PrincipalScreen from '../screens/PrincipalScreen';
 import UserConsultasScreen from '../screens/UserConsultasScreen';
 import DetalhesConsultaScreen from '../screens/DetalhesConsultaScreen';
+import VeterinarioScreen from '../screens/VeterinarioScreen';
 
 // Ícones personalizados
 import iconeAgenda from '../assets/Calendario.png.png';
@@ -95,6 +96,14 @@ function ConsultasUserTabStack() {
     <Stack.Navigator screenOptions={{ ...newHeaderOptions, ...slideTransition }}>
       <Stack.Screen name="MinhasConsultas" component={UserConsultasScreen} options={{ title: 'Minhas Consultas' }} />
       <Stack.Screen name="DetalhesConsulta" component={DetalhesConsultaScreen} options={{ title: 'Detalhes da Consulta', headerBackVisible: true, headerLeft: undefined }} />
+    </Stack.Navigator>
+  );
+}
+
+function VeterinarioUserTabStack() {
+  return (
+    <Stack.Navigator screenOptions={{ ...newHeaderOptions, ...slideTransition }}>
+      <Stack.Screen name="VeterinarioScreen" component={VeterinarioScreen} options={{ title: 'Veterinário' }} />
     </Stack.Navigator>
   );
 }
@@ -217,7 +226,7 @@ const UserTabNavigator = () => {
 
       <Tab.Screen
         name="Veterinario"
-        component={ConsultasUserTabStack}
+        component={VeterinarioUserTabStack}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Image

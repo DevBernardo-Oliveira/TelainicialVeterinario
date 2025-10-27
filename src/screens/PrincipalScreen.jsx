@@ -71,15 +71,15 @@ const PrincipalScreen = () => {
           />
           <CategoryButton
             icon={iconeMao}
-            label="Cuidados"
+            label="Chat"
             styles={styles}
-            onPress={() => navigation.navigate('AddPet')}
+            onPress={() => navigation.navigate('Chat')}
           />
           <CategoryButton
             icon={iconeVeterinario}
             label="Veterinário"
             styles={styles}
-            onPress={() => navigation.navigate('Veterinario')}
+            onPress={() => navigation.navigate('Veterinario', { screen: 'VeterinarioScreen' })}
           />
           <CategoryButton
             icon={iconePessoa}
@@ -99,6 +99,20 @@ const PrincipalScreen = () => {
           </TouchableOpacity>
         </View>
         {/* Conteúdo removido para deixar a seção em branco */}
+        <TouchableOpacity style={styles.notificationCard} activeOpacity={0.7} onPress={() => console.log('Notificação clicada')}>
+            <Image
+                source={{ uri: 'https://placehold.co/60x60/F7EFFF/3C3633?text=Pet' }}
+                style={styles.petImage}
+            />
+            <View style={styles.notificationInfo}>
+                <Text style={styles.petName}>Mascote 2</Text>
+                <Text style={styles.notificationType}>Vacinação</Text>
+                <Text style={styles.notificationTime}>02:30 PM</Text>
+            </View>
+            <View style={styles.statusButton}>
+                <Text style={styles.statusButtonText}>Agendada</Text>
+            </View>
+        </TouchableOpacity>
       </View>
 
 
@@ -226,6 +240,49 @@ const getStyles = (colors) => ({
   },
   notificacoesSection: {
     marginBottom: 32,
+  },
+  notificationCard: {
+    backgroundColor: colors.cardBackground,
+    borderRadius: 24,
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 16,
+  },
+  petImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 16,
+    marginRight: 16,
+  },
+  notificationInfo: {
+    flexGrow: 1,
+  },
+  petName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: colors.textPrimary,
+    marginBottom: 4,
+  },
+  notificationType: {
+    fontSize: 14,
+    color: colors.textSecondary,
+    marginBottom: 4,
+  },
+  notificationTime: {
+    fontSize: 12,
+    color: colors.textSecondary,
+  },
+  statusButton: {
+    backgroundColor: '#E8E0FF',
+    borderRadius: 12,
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+  },
+  statusButtonText: {
+    color: colors.primary,
+    fontWeight: 'bold',
+    fontSize: 12,
   },
   consultaCard: {
     backgroundColor: colors.cardBackground,
