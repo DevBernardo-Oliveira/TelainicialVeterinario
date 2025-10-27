@@ -71,7 +71,7 @@ const ChatsListScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.veryLightPurple, paddingTop: 8 },
+  container: { flex: 1, backgroundColor: Colors.white, paddingTop: 8 },
   itemContainer: {
     ...CommonStyles.card,
     flexDirection: 'row',

@@ -56,8 +56,8 @@ export default function UserTabBar({ state, descriptors, navigation }) {
             <Image
               source={tab.image}
               style={{
-                width: tab.name === 'Agenda' ? widthPixel(30) : widthPixel(24),
-                height: tab.name === 'Agenda' ? heightPixel(30) : heightPixel(24),
+                width: tab.name === 'Agenda' ? widthPixel(70) : widthPixel(24),
+                height: tab.name === 'Agenda' ? heightPixel(70) : heightPixel(24),
                 tintColor: isFocused ? Colors.purple : Colors.mediumGray,
               }}
             />

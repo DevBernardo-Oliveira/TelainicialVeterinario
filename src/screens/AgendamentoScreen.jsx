@@ -156,7 +156,7 @@ export default function AgendamentoScreen() {
 
   // Configuração do tema do calendário
   const calendarTheme = useMemo(() => ({
-    backgroundColor: '#EBE4F4',
+    backgroundColor: '#FFFFFF',
     calendarBackground: '#FFFFFF',
     textSectionTitleColor: '#A367F0',
     selectedDayBackgroundColor: '#A367F0',
@@ -201,6 +201,7 @@ export default function AgendamentoScreen() {
 
   return (
     <ScrollView 
+      style={{ backgroundColor: '#FFFFFF' }}
       contentContainerStyle={styles.scrollContainer}
       showsVerticalScrollIndicator={false}
     >
@@ -354,7 +355,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 20,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#FFFFFF',
   },
   container: {
     flex: 1,

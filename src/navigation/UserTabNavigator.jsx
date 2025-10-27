@@ -169,8 +169,8 @@ const UserTabNavigator = () => {
             <Image
               source={iconeAgenda}
               style={{
-                width: size * 1.2,
-                height: size * 1.2,
+                width: size * 1.8,
+                height: size * 1.8,
                 tintColor: color,
               }}
               resizeMode="contain"

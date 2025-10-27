@@ -18,6 +18,7 @@ import SecurityScreen from '../screens/SecurityScreen';
 import PrincipalScreen from '../screens/PrincipalScreen';
 import UserConsultasScreen from '../screens/UserConsultasScreen';
 import DetalhesConsultaScreen from '../screens/DetalhesConsultaScreen';
+import PrincipalVeterinarioScreen from '../screens/PrincipalVeterinarioScreen';
 
 // Ícones personalizados
 import iconeAgenda from '../assets/Calendario.png.png';
@@ -133,7 +134,7 @@ function AgendaUserTabStack() {
 function PetUserTabStack() {
   return (
     <Stack.Navigator screenOptions={{ ...newHeaderOptions, ...slideTransition }}>
-      <Stack.Screen name="Principal" component={PrincipalScreen} options={{ title: 'Meus Pets' }} />
+      <Stack.Screen name="Principal" component={PrincipalVeterinarioScreen} options={{ title: 'Meus Pets' }} />
     </Stack.Navigator>
   );
 }
@@ -141,7 +142,7 @@ function PetUserTabStack() {
 const VeterinarianTabNavigator = () => {
   return (
     <Tab.Navigator
-      initialRouteName="Pet"
+      initialRouteName="Principal"
       screenOptions={{
         tabBarStyle: {
           height: 60,
@@ -163,24 +164,6 @@ const VeterinarianTabNavigator = () => {
     >
 
       <Tab.Screen
-        name="Pet"
-        component={PetUserTabStack}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Image
-              source={iconePet}
-              style={{
-                width: size * 1.2,
-                height: size * 1.2,
-                tintColor: color,
-              }}
-              resizeMode="contain"
-            />
-          ),
-        }}
-      />
-
-      <Tab.Screen
         name="Agenda"
         component={AgendaUserTabStack}
         options={{
@@ -195,6 +178,7 @@ const VeterinarianTabNavigator = () => {
               resizeMode="contain"
             />
           ),
+          title: 'Agenda',
         }}
       />
 
@@ -213,11 +197,31 @@ const VeterinarianTabNavigator = () => {
               resizeMode="contain"
             />
           ),
+          title: 'Chat',
         }}
       />
 
       <Tab.Screen
-        name="Veterinario"
+        name="Principal"
+        component={PetUserTabStack}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={iconeVeterinario}
+              style={{
+                width: size * 1.2,
+                height: size * 1.2,
+                tintColor: color,
+              }}
+              resizeMode="contain"
+            />
+          ),
+          title: 'Principal',
+        }}
+      />
+
+      <Tab.Screen
+        name="Consultas"
         component={ConsultasUserTabStack}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -231,11 +235,12 @@ const VeterinarianTabNavigator = () => {
               resizeMode="contain"
             />
           ),
+          title: 'Consultas',
         }}
       />
 
       <Tab.Screen
-        name="Pessoa"
+        name="Configuracoes"
         component={ConfigurationUserTabStack}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -249,6 +254,7 @@ const VeterinarianTabNavigator = () => {
               resizeMode="contain"
             />
           ),
+          title: 'Configurações',
         }}
       />
     </Tab.Navigator>
