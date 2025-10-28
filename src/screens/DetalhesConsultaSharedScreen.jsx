@@ -79,7 +79,9 @@ const DetalhesConsultaScreen = ({ navigation, route }) => {
           {/* Observation */}
           <View style={styles.section}>
             <Text style={styles.observationText}>
-              Dependendo do caso, recomendamos que você traga qualquer item adicional que considere levar.
+              {consultaData.status === 'Concluída' && "Sua consulta esta completa, agradecemos a preferencia."}
+              {consultaData.status === 'Agendada' && "Sua consulta foi agendada, espere o veterinario aceitar"}
+              {consultaData.status === 'Andamento' && "Sua consulta esta em andamento, aguarde ate o dia marcado."}
             </Text>
           </View>
  
@@ -97,9 +99,7 @@ const DetalhesConsultaScreen = ({ navigation, route }) => {
           {/* Botões de ação - diferentes por status */}
           <View style={styles.actionButtonsContainer}>
             {consultaData.status === 'Concluída' && (
-              <TouchableOpacity style={styles.reportButton} onPress={() => {}}>
-                <Text style={styles.reportButtonText}>Gerar Relatório</Text>
-              </TouchableOpacity>
+              null
             )}
             
             {consultaData.status === 'Agendada' && (
@@ -108,14 +108,7 @@ const DetalhesConsultaScreen = ({ navigation, route }) => {
             )}
             
             {consultaData.status === 'Andamento' && (
-              <>
-                <TouchableOpacity style={styles.emergencyButton} onPress={() => {}}>
-                  <Text style={styles.emergencyButtonText}>Clique Aqui</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.cancelButton} onPress={() => {}}>
-                  <Text style={styles.cancelButtonText}>Cancelar</Text>
-                </TouchableOpacity>
-              </>
+              null
             )}
           </View>
         </View>
@@ -277,7 +270,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   observationText: {
-    fontSize: 12,
+    fontSize: 18,
     color: '#6E59D9'
   },
   sectionTitle: {

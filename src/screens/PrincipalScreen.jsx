@@ -99,20 +99,20 @@ const PrincipalScreen = () => {
           </TouchableOpacity>
         </View>
         {/* Conteúdo removido para deixar a seção em branco */}
-        <TouchableOpacity style={styles.notificationCard} activeOpacity={0.7} onPress={() => console.log('Notificação clicada')}>
+        <View style={styles.notificationCard}>
             <Image
-                source={{ uri: 'https://placehold.co/60x60/F7EFFF/3C3633?text=Pet' }}
+                source={require('../assets/cat1.png')}
                 style={styles.petImage}
             />
             <View style={styles.notificationInfo}>
-                <Text style={styles.petName}>Mascote 2</Text>
+                <Text style={styles.petName}>Gato</Text>
                 <Text style={styles.notificationType}>Vacinação</Text>
-                <Text style={styles.notificationTime}>02:30 PM</Text>
+                <Text style={styles.notificationTime}>Essa consulta esta completa.</Text>
             </View>
             <View style={styles.statusButton}>
-                <Text style={styles.statusButtonText}>Agendada</Text>
+                <Text style={styles.statusButtonText}>completo</Text>
             </View>
-        </TouchableOpacity>
+        </View>
       </View>
 
 
@@ -242,12 +242,14 @@ const getStyles = (colors) => ({
     marginBottom: 32,
   },
   notificationCard: {
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderRadius: 24,
     padding: 16,
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 16,
+    borderWidth: 1,
+    borderColor: 'rgb(199, 157, 253)',
   },
   petImage: {
     width: 60,

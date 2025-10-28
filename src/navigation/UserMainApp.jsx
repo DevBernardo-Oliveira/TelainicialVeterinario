@@ -261,12 +261,12 @@ function MainTabs({ route }) {
             <Stack.Screen
               name="ReviewScreen"
               component={ReviewScreen}
-              options={{ title: 'Revisar Agendamento' }}
+              options={{ title: 'Revisar Agendamento', headerBackVisible: true, headerLeft: undefined }}
             />
             <Stack.Screen
               name="SuccessScreen"
               component={SuccessScreen}
-              options={{ title: 'Agendamento Concluído' }}
+              options={{ title: 'Agendamento Concluído', headerBackVisible: true, headerLeft: undefined }}
             />
             <Stack.Screen
               name="DetalhesConsulta"

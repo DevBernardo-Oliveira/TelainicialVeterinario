@@ -4,9 +4,16 @@ import React from 'react';
 // Obter as dimensões da tela
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
+// Base de design para a largura da tela (por exemplo, iPhone X)
+const BASE_WIDTH = 375;
+const BASE_HEIGHT = 812;
+
 // Função para calcular o tamanho normalizado com base na largura da tela
 export function normalize(size, based = 'width') {
-  return size;
+  const newSize = based === 'height' ?
+    size * SCREEN_HEIGHT / BASE_HEIGHT :
+    size * SCREEN_WIDTH / BASE_WIDTH;
+  return Math.round(newSize);
 }
 
 // Para uso em margens, paddings, altura, largura, etc.
