@@ -8,6 +8,7 @@ import iconeHome from '../assets/icone.png'; // Importando icone.png
 import iconeEngrenagem from '../assets/engrenagem.png'; // Importando engrenagem.png
 import iconeLogout from '../assets/logout.png'; // Importando logout.png
 import iconeLixo from '../assets/Lixopng.png'; // Importando Lixopng.png
+import iconeCalendario from '../assets/Calendario.png.png'; // Importando Calendario.png.png
 
 // --- Definições de Cores ---
 const COLORS = {
@@ -18,6 +19,7 @@ const COLORS = {
   iconSafe: Colors.purple, // Roxo/Azul escuro para ícones normais
   avatarBg: Colors.veryLightPurple, // Branco-rosado claro do círculo superior
 };
+
 // --- Componente de Item de Menu ---
 const MenuItem = ({ iconName, text, isDelete = false, onPress, imageSource }) => (
   <TouchableOpacity 
@@ -51,10 +53,10 @@ const MenuItem = ({ iconName, text, isDelete = false, onPress, imageSource }) =>
   </TouchableOpacity>
 );
 
-// --- Componente da Tela de Configuração Principal ---
+// --- Componente da Tela de Configuração para Veterinários ---
 import { useNavigation } from '@react-navigation/native';
 
-const ConfigurationScreen = () => {
+const ConfigurationVetScreen = () => {
   const navigation = useNavigation();
   const [isModalVisible, setModalVisible] = useState(false);
 
@@ -74,8 +76,8 @@ const ConfigurationScreen = () => {
 
       {/* Menu de Opções */}
       <View style={styles.menuContainer}>
-        <MenuItem iconName="fingerprint" text="Segurança" onPress={() => navigation.navigate('Security')} imageSource={iconeEngrenagem} />
-        <MenuItem iconName="paw" text="Pets" onPress={() => navigation.navigate('Pets')} imageSource={iconeHome} />
+        <MenuItem iconName="fingerprint" text="Segurança" onPress={() => navigation.navigate('SecurityVeterinario')} imageSource={iconeEngrenagem} />
+        <MenuItem iconName="paw" text="Agenda" onPress={() => navigation.navigate('AgendaVeterinario')} imageSource={iconeCalendario} />
         <MenuItem iconName="sign-out-alt" text="Sair da conta" onPress={() => navigation.navigate('Login')} imageSource={iconeLogout} />
         <MenuItem 
           iconName="trash-alt" 
@@ -168,4 +170,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConfigurationScreen;
+export default ConfigurationVetScreen;

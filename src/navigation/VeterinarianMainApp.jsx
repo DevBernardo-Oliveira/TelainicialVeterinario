@@ -1,8 +1,8 @@
 import React from 'react';
-import UserTabNavigator from './UserTabNavigator';
+import VeterinarianTabNavigator from './VeterinarianTabNavigator';
 
-const UserMainApp = () => {
-  return <UserTabNavigator />;
+const VeterinarianMainApp = () => {
+  return <VeterinarianTabNavigator />;
 };
 
-export default UserMainApp;
+export default VeterinarianMainApp;
