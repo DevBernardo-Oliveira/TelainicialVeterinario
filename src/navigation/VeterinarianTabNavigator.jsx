@@ -13,6 +13,7 @@ import ChatScreen from '../screens/ChatScreen';
 import ChatsListScreen from '../screens/ChatsListScreen';
 import ConfigurationVetScreen from '../screens/ConfigurationVetScreen';
 import SecurityScreen from '../screens/SecurityScreen';
+import UserConsultasScreen from '../screens/UserConsultasScreen';
 
 // Ícones personalizados
 import iconeAgenda from '../assets/Calendario.png.png';
@@ -99,7 +100,7 @@ function VeterinarianChatTabStack() {
 function VeterinarianMainTabStack() {
   return (
     <Stack.Navigator screenOptions={{ ...newHeaderOptions, ...slideTransition }}>
-      <Stack.Screen name="VeterinarianDashboard" component={VeterinarianDashboardScreen} options={{ title: 'Área do Veterinário' }} />
+      <Stack.Screen name="VeterinarianDashboard" component={UserConsultasScreen} options={{ title: 'Área do Veterinário' }} />
       <Stack.Screen name="VeterinarioMain" component={VeterinarioScreen} options={{ title: 'Veterinário' }} />
     </Stack.Navigator>
   );

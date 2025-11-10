@@ -7,9 +7,12 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import ConsultaDetailsModal from '../components/ConsultaDetailsModal';
 
 const UserConsultasScreen = ({ navigation }) => {
   const [activeTab, setActiveTab] = useState('Pendentes');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedConsulta, setSelectedConsulta] = useState(null);
 
   // Dados das consultas com informações únicas para cada pet
   const consultasData = {
@@ -102,13 +105,14 @@ const UserConsultasScreen = ({ navigation }) => {
 
   const renderContent = () => {
     const Card = ({ consulta }) => {
-      const navigateToDetails = () => {
-        navigation.navigate('DetalhesConsulta', { consulta: { ...consulta, time: consulta.time, date: consulta.date } });
+      const showConsultaDetails = () => {
+        setSelectedConsulta(consulta);
+        setModalVisible(true);
       };
   
       return (
         activeTab !== 'Pendentes' ? (
-          <TouchableOpacity onPress={navigateToDetails} style={styles.card}>
+          <TouchableOpacity onPress={showConsultaDetails} style={styles.card}>
             <Image source={consulta.imageSource} style={styles.petImage} />
             <View style={styles.cardInfo}>
               <Text style={styles.petName}>{consulta.petName}</Text>
@@ -120,7 +124,7 @@ const UserConsultasScreen = ({ navigation }) => {
             </View>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity onPress={navigateToDetails} style={styles.card}>
+          <TouchableOpacity onPress={showConsultaDetails} style={styles.card}>
             <Image source={consulta.imageSource} style={styles.petImage} />
             <View style={styles.cardInfo}>
               <Text style={styles.petName}>{consulta.petName}</Text>
@@ -178,6 +182,12 @@ const UserConsultasScreen = ({ navigation }) => {
       {/* <TouchableOpacity style={styles.scheduleButton} onPress={() => navigation.navigate('Agendamento')}>
         <Text style={styles.scheduleButtonText}>Agendar Consulta</Text>
       </TouchableOpacity> */}
+      
+      <ConsultaDetailsModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        consulta={selectedConsulta}
+      />
     </View>
   );
 };
@@ -204,7 +214,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 0, // Espaçamento controlado por justifyContent
   },
   activeTab: {
-    backgroundColor: '#A367F0',
+    backgroundColor: '#B48CF0',
     transform: [{ scale: 1.05 }], // Destaque sutil
     paddingVertical: 16, // Menor altura
     paddingHorizontal: 10, // Menor largura
@@ -213,7 +223,7 @@ const styles = StyleSheet.create({
   tabText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#8D7EFB',
+    color: '#B48CF0',
   },
   activeTabText: {
     color: '#FFFFFF',
@@ -231,7 +241,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#C79DFD',
+    borderColor: '#D0BCFF',
   },
   petImage: {
     width: 48,
@@ -246,15 +256,15 @@ const styles = StyleSheet.create({
   },
   petName: {
     fontWeight: 'bold',
-    color: '#A367F0',
+    color: '#B48CF0',
   },
   service: {
     fontSize: 12,
-    color: '#8D7EFB',
+    color: '#B48CF0',
   },
   time: {
     fontSize: 12,
-    color: '#C49DF6',
+    color: '#D0BCFF',
   },
   statusBadgeCard: {
     borderRadius: 12,
@@ -267,16 +277,16 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   statusPendentes: {
-    backgroundColor: 'rgba(141, 126, 251, 0.8)' // #8D7EFB with opacity
+    backgroundColor: 'rgba(168, 192, 255, 0.8)' // #A8C0FF with opacity
   },
   statusAceitas: {
-    backgroundColor: 'rgba(196, 157, 246, 0.8)', // #C49DF6 with opacity
+    backgroundColor: 'rgba(208, 188, 255, 0.8)', // #D0BCFF with opacity
   },
   statusConcluída: {
-    backgroundColor: 'rgba(163, 103, 240, 0.8)' // #A367F0 with opacity
+    backgroundColor: 'rgba(180, 140, 240, 0.8)' // #B48CF0 with opacity
   },
   scheduleButton: {
-    backgroundColor: '#A367F0', // Gradient would be 'linear-gradient(to right, #A367F0, #8D7EFB)'
+    backgroundColor: '#B48CF0', // Gradient would be 'linear-gradient(to right, #B48CF0, #D0BCFF)'
     height: 44,
     width: '80%',
     borderRadius: 8,
@@ -315,7 +325,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F44336', // Red
   },
   detailsButton: {
-    backgroundColor: '#C49DF6', // Light Purple
+    backgroundColor: '#D0BCFF', // Light Purple
   },
 });
 
