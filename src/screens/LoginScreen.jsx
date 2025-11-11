@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Image, StyleSheet, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native'; // Importe o hook de navegação
 import { Colors, CommonStyles } from '../Utils/Theme';
 
@@ -7,12 +7,18 @@ const LoginScreen = () => {
   const navigation = useNavigation(); // Obtenha o objeto de navegação
   const route = useRoute();
   const [userType, setUserType] = useState(route.params?.userType || 'usuario'); // 'usuario' ou 'veterinario'
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleBackPress = () => {
-    navigation.goBack(); // Volta para a tela anterior na pilha
+    navigation.navigate('Inicial'); // Volta para a tela inicial
   };
 
   const handleLogin = () => {
+    if (!email || !password) {
+      Alert.alert('Erro', 'Por favor, preencha o email e a senha.');
+      return;
+    }
     // Lógica de autenticação aqui
     if (userType === 'usuario') {
       navigation.navigate('UserMainApp');
@@ -69,8 +75,10 @@ const LoginScreen = () => {
             placeholder="Exemplo@gmail.com"
             placeholderTextColor={Colors.lightPurple}
             keyboardType="email-address"
-            maxLength={35} // Limit email to 35 characters
+            maxLength={40} // Limit email to 40 characters
             autoCapitalize="none"
+            value={email}
+            onChangeText={setEmail}
           />
         </View>
 
@@ -82,7 +90,9 @@ const LoginScreen = () => {
             placeholder="Senha"
             placeholderTextColor={Colors.lightPurple}
             secureTextEntry
-            maxLength={20} // Limit password to 20 characters
+            maxLength={15} // Limit password to 15 characters
+            value={password}
+            onChangeText={setPassword}
           />
         </View>
 

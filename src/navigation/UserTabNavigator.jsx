@@ -21,7 +21,7 @@ import DetalhesConsultaScreen from '../screens/DetalhesConsultaScreen';
 import VeterinarioScreen from '../screens/VeterinarioScreen';
 
 // Ícones personalizados
-import iconeAgenda from '../assets/Calendario.png.png';
+import iconeAgenda from '../assets/Calendario.png';
 import iconeChat from '../assets/Chat.png.png';
 import icone from '../assets/icone.png';
 import iconePet from '../assets/pet.png';

@@ -84,7 +84,16 @@ const ConsultaDetailsModal = ({ visible, onClose, consulta }) => {
               ))}
             </View>
 
-
+            {consulta.status === 'Pendente' && (
+              <View style={styles.actionContainer}>
+                <TouchableOpacity style={[styles.actionButton, styles.acceptButton]}>
+                  <Text style={styles.actionButtonText}>Aceitar Consulta</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.actionButton, styles.rejectButton]}>
+                  <Text style={styles.actionButtonText}>Rejeitar Consulta</Text>
+                </TouchableOpacity>
+              </View>
+            )}
 
             {consulta.status === 'Aceita' && (
               <TouchableOpacity style={[styles.actionButton, styles.startButton]}>
@@ -225,12 +234,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#333',
   },
+  actionContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 20,
+    marginBottom: 20,
+  },
   actionButton: {
     paddingVertical: 15,
     borderRadius: 10,
     alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 20,
+    flex: 1,
+    marginHorizontal: 5,
   },
   actionButtonText: {
     fontSize: 16,
@@ -239,6 +254,13 @@ const styles = StyleSheet.create({
   },
   startButton: {
     backgroundColor: '#B48CF0',
+    marginHorizontal: 0, // Ocupar toda a largura
+  },
+  acceptButton: {
+    backgroundColor: '#4CAF50', // Verde para aceitar
+  },
+  rejectButton: {
+    backgroundColor: '#F44336', // Vermelho para rejeitar
   },
 });
 

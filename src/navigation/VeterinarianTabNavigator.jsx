@@ -16,7 +16,7 @@ import SecurityScreen from '../screens/SecurityScreen';
 import UserConsultasScreen from '../screens/UserConsultasScreen';
 
 // Ícones personalizados
-import iconeAgenda from '../assets/Calendario.png.png';
+import iconeAgenda from '../assets/Calendario.png';
 import iconeChat from '../assets/Chat.png.png';
 import iconeVeterinario from '../assets/veterinario.png';
 import iconePessoa from '../assets/pessoa.png';
@@ -156,8 +156,8 @@ const VeterinarianTabNavigator = () => {
             <Image
               source={iconeAgenda}
               style={{
-                width: size * 1.8,
-                height: size * 1.8,
+                width: size,
+                height: size,
                 tintColor: color,
               }}
               resizeMode="contain"

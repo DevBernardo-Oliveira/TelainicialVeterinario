@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Colors, CommonStyles } from '../Utils/Theme';
 
 // Ícones
-import iconeConsultas from '../assets/Calendario.png.png';
+import iconeConsultas from '../assets/Calendario.png';
 import iconePacientes from '../assets/pet.png';
 import iconeChat from '../assets/Chat.png.png';
 import iconeConfig from '../assets/engrenagem.png';

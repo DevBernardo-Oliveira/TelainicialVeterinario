@@ -8,7 +8,7 @@ import iconeHome from '../assets/icone.png'; // Importando icone.png
 import iconeEngrenagem from '../assets/engrenagem.png'; // Importando engrenagem.png
 import iconeLogout from '../assets/logout.png'; // Importando logout.png
 import iconeLixo from '../assets/Lixopng.png'; // Importando Lixopng.png
-import iconeCalendario from '../assets/Calendario.png.png'; // Importando Calendario.png.png
+import iconeCalendario from '../assets/Calendario.png'; // Importando Calendario.png
 
 // --- Definições de Cores ---
 const COLORS = {
@@ -78,7 +78,7 @@ const ConfigurationVetScreen = () => {
       <View style={styles.menuContainer}>
         <MenuItem iconName="fingerprint" text="Segurança" onPress={() => navigation.navigate('SecurityVeterinario')} imageSource={iconeEngrenagem} />
         <MenuItem iconName="paw" text="Agenda" onPress={() => navigation.navigate('AgendaVeterinario')} imageSource={iconeCalendario} />
-        <MenuItem iconName="sign-out-alt" text="Sair da conta" onPress={() => navigation.navigate('Login')} imageSource={iconeLogout} />
+        <MenuItem iconName="sign-out-alt" text="Sair da conta" onPress={() => navigation.reset({ index: 0, routes: [{ name: 'Login' }] })} imageSource={iconeLogout} />
         <MenuItem 
           iconName="trash-alt" 
           text="Excluir Conta" 

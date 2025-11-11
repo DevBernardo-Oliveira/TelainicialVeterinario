@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 
 // Ícones personalizados
-import iconeHome from '../assets/Calendario.png.png';
+import iconeHome from '../assets/Calendario.png';
 import iconeMao from '../assets/Chat.png.png';
 import iconePet from '../assets/pet.png';
 import iconePessoa from '../assets/pessoa.png';
@@ -222,8 +222,8 @@ const getStyles = (colors) => ({
   },
   // Ícone maior para "Agenda"
   categoryIconAgenda: {
-    width: 56,
-    height: 56,
+    width: 32,
+    height: 32,
     resizeMode: 'contain',
     tintColor: '#FFFFFF',
   },

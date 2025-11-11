@@ -76,7 +76,7 @@ const ConfigurationScreen = () => {
       <View style={styles.menuContainer}>
         <MenuItem iconName="fingerprint" text="Segurança" onPress={() => navigation.navigate('Security')} imageSource={iconeEngrenagem} />
         <MenuItem iconName="paw" text="Pets" onPress={() => navigation.navigate('Pets')} imageSource={iconeHome} />
-        <MenuItem iconName="sign-out-alt" text="Sair da conta" onPress={() => navigation.navigate('Login')} imageSource={iconeLogout} />
+        <MenuItem iconName="sign-out-alt" text="Sair da conta" onPress={() => navigation.reset({ index: 0, routes: [{ name: 'Login' }] })} imageSource={iconeLogout} />
         <MenuItem 
           iconName="trash-alt" 
           text="Excluir Conta" 

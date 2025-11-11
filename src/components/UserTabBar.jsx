@@ -5,7 +5,7 @@ import { Colors } from '../Utils/Theme';
 import { Ionicons } from '@expo/vector-icons';
 
 const ICON_IMAGES = {
-  Agenda: require('../assets/Calendario.png.png'),
+  Agenda: require('../assets/Calendario.png'),
   Chat: require('../assets/Chat.png.png'),
   Home: require('../assets/pet.png'),
   Veterinario: require('../assets/veterinario.png'),
