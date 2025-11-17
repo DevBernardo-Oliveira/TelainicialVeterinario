@@ -128,6 +128,7 @@ function VeterinarianConfigTabStack() {
 const VeterinarianTabNavigator = () => {
   return (
     <Tab.Navigator
+      initialRouteName="PetsVeterinario"
       screenOptions={{
         tabBarStyle: {
           height: 60,

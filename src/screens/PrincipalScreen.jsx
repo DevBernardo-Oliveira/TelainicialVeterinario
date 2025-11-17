@@ -1,5 +1,5 @@
-import React from 'react';
-import { Image, TouchableOpacity, View, Text, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { Image, TouchableOpacity, View, Text, Platform, Modal, ScrollView, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 
@@ -27,6 +27,35 @@ const PrincipalScreen = () => {
   const { colors } = useTheme();
   const styles = getStyles(colors);
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
+
+  // Dados de exemplo para notificações
+  const notificacoes = [
+    {
+      id: 1,
+      petNome: 'Gato',
+      tipo: 'Vacinação',
+      descricao: 'Essa consulta esta completa.',
+      status: 'completo',
+      imagem: require('../assets/cat1.png')
+    },
+    {
+      id: 2,
+      petNome: 'Cachorro',
+      tipo: 'Consulta Geral',
+      descricao: 'Consulta em andamento.',
+      status: 'andamento',
+      imagem: require('../assets/dog1.png')
+    },
+    {
+      id: 3,
+      petNome: 'Cachorro',
+      tipo: 'Check-up',
+      descricao: 'Consulta agendada.',
+      status: 'agendado',
+      imagem: require('../assets/pet.png')
+    }
+  ];
 
   return (
     <View style={styles.container}>
@@ -94,26 +123,110 @@ const PrincipalScreen = () => {
       <View style={styles.notificacoesSection}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Notificações</Text>
-          <TouchableOpacity onPress={() => console.log('Ver Todas clicado')}>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Text style={styles.seeAllLink}>Ver Todas</Text>
           </TouchableOpacity>
         </View>
-        {/* Conteúdo removido para deixar a seção em branco */}
-        <View style={styles.notificationCard}>
+        {notificacoes.slice(0, 2).map((notificacao) => (
+          <View key={notificacao.id} style={styles.notificationCard}>
             <Image
-                source={require('../assets/cat1.png')}
-                style={styles.petImage}
+              source={notificacao.imagem}
+              style={styles.petImage}
             />
             <View style={styles.notificationInfo}>
-                <Text style={styles.petName}>Gato</Text>
-                <Text style={styles.notificationType}>Vacinação</Text>
-                <Text style={styles.notificationTime}>Essa consulta esta completa.</Text>
+              <Text style={styles.petName}>{notificacao.petNome}</Text>
+              <Text style={styles.notificationType}>{notificacao.tipo}</Text>
+              <Text style={styles.notificationTime}>{notificacao.descricao}</Text>
             </View>
-            <View style={styles.statusButton}>
-                <Text style={styles.statusButtonText}>completo</Text>
+            <View style={[
+              styles.statusButton,
+              { 
+                backgroundColor: notificacao.status === 'completo' 
+                  ? '#E8E0FF' 
+                  : notificacao.status === 'andamento' 
+                  ? '#FFE8E8' 
+                  : '#E0F7FF' // Cor para 'agendado'
+              }
+            ]}>
+              <Text style={[
+                styles.statusButtonText,
+                { 
+                  color: notificacao.status === 'completo' 
+                    ? colors.primary 
+                    : notificacao.status === 'andamento' 
+                    ? '#FF6B6B' 
+                    : '#03A9F4' // Cor para 'agendado'
+                }
+              ]}>
+                {notificacao.status}
+              </Text>
             </View>
-        </View>
+          </View>
+        ))}
       </View>
+
+      {/* Modal de Notificações */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={modalStyles.modalContainer}>
+          <View style={modalStyles.modalContent}>
+            {/* Header do Modal */}
+            <View style={modalStyles.modalHeader}>
+              <Text style={modalStyles.modalTitle}>Todas as Notificações</Text>
+              <TouchableOpacity 
+                style={modalStyles.closeButton} 
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={modalStyles.closeButtonText}>✕</Text>
+              </TouchableOpacity>
+            </View>
+            
+            {/* Lista de Notificações */}
+            <ScrollView style={modalStyles.notificationList}>
+              {notificacoes.map((notificacao) => (
+                <View key={notificacao.id} style={modalStyles.notificationItem}>
+                  <Image
+                    source={notificacao.imagem}
+                    style={modalStyles.modalPetImage}
+                  />
+                  <View style={modalStyles.modalNotificationInfo}>
+                    <Text style={modalStyles.modalPetName}>{notificacao.petNome}</Text>
+                    <Text style={modalStyles.modalNotificationType}>{notificacao.tipo}</Text>
+                    <Text style={modalStyles.modalNotificationDesc}>{notificacao.descricao}</Text>
+                  </View>
+                  <View style={[
+                    modalStyles.modalStatusButton,
+                    { 
+                      backgroundColor: notificacao.status === 'completo' 
+                        ? '#E8E0FF' 
+                        : notificacao.status === 'andamento' 
+                        ? '#FFE8E8' 
+                        : '#E0F7FF' // Cor para 'agendado'
+                    }
+                  ]}>
+                    <Text style={[
+                      modalStyles.modalStatusText,
+                      { 
+                        color: notificacao.status === 'completo' 
+                          ? '#7F57F1' 
+                          : notificacao.status === 'andamento' 
+                          ? '#FF6B6B' 
+                          : '#03A9F4' // Cor para 'agendado'
+                      }
+                    ]}>
+                      {notificacao.status}
+                    </Text>
+                  </View>
+                </View>
+              ))}
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
 
 
       {/* O rodapé será removido e a navegação será gerenciada pelo Tab.Navigator em App.jsx */}
@@ -324,6 +437,109 @@ const getStyles = (colors) => ({
     alignItems: 'center',
     fontSize: 20,
     fontWeight: 'bold',
+  },
+});
+
+// Estilos do Modal
+const modalStyles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 24,
+    width: '90%',
+    maxHeight: '80%',
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E8E0FF',
+    paddingBottom: 15,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#3C3633',
+  },
+  closeButton: {
+    backgroundColor: '#F5F5F5',
+    borderRadius: 20,
+    width: 32,
+    height: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  closeButtonText: {
+    fontSize: 18,
+    color: '#7D7C7C',
+    fontWeight: 'bold',
+  },
+  notificationList: {
+    maxHeight: '70%',
+  },
+  notificationItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: 'rgb(199, 157, 253)',
+  },
+  modalPetImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 12,
+    marginRight: 12,
+  },
+  modalNotificationInfo: {
+    flex: 1,
+    marginRight: 10,
+  },
+  modalPetName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#3C3633',
+    marginBottom: 2,
+  },
+  modalNotificationType: {
+    fontSize: 14,
+    color: '#7F57F1',
+    fontWeight: '600',
+    marginBottom: 2,
+  },
+  modalNotificationDesc: {
+    fontSize: 12,
+    color: '#7D7C7C',
+  },
+  modalStatusButton: {
+    borderRadius: 8,
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    minWidth: 70,
+    alignItems: 'center',
+  },
+  modalStatusText: {
+    fontSize: 11,
+    fontWeight: 'bold',
+    textTransform: 'capitalize',
   },
 });
 

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Image, TouchableOpacity, View, Text, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { Image, TouchableOpacity, View, Text, Platform, Modal, ScrollView, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 
@@ -27,6 +27,108 @@ const PrincipalVetScreen = () => {
   const { colors } = useTheme();
   const styles = getStyles(colors);
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
+
+  // Dados reais da agenda do veterinário
+  const consultasData = {
+    Agendada: [
+      {
+        id: 1,
+        petName: "Mascote 1",
+        service: "Consulta Geral", 
+        time: "10:00 AM",
+        imageSource: require('../assets/cat1.png'),
+        status: "Agendada",
+        data: "15:23 | 05/02/2025",
+        sintomas: "Meu gato acordou vomitando, está dormindo mais que o normal e não está comendo nada.",
+        localizacao: "R. Bento Branco de Andrade Filho, 379 – Santo Amaro, São Paulo – SP, 04757-000",
+        implementos: ["Termômetro", "Estetoscópio", "Soro"]
+      },
+      {
+        id: 2,
+        petName: "Mascote 2", 
+        service: "Vacinação",
+        time: "02:30 PM",
+        imageSource: require('../assets/dog1.png'),
+        status: "Agendada",
+        data: "14:00 | 05/02/2025",
+        sintomas: "Vacinação anual de rotina para meu cachorro.",
+        localizacao: "Av. Paulista, 1000 – Bela Vista, São Paulo – SP, 01310-000",
+        implementos: ["Vacina", "Algodão", "Álcool"]
+      }
+    ],
+    Andamento: [
+      {
+        id: 3,
+        petName: "Mascote 3",
+        service: "Exame de Sangue", 
+        time: "09:00 AM",
+        imageSource: require('../assets/dog2.png'),
+        status: "Andamento",
+        data: "09:00 | 05/02/2025",
+        sintomas: "Meu cachorro está com fraqueza e perda de apetite, precisa de exame de sangue.",
+        localizacao: "R. Augusta, 500 – Consolação, São Paulo – SP, 01305-000",
+        implementos: ["Agulha", "Tubo de coleta", "Algodão"]
+      }
+    ],
+    Concluídas: [
+      {
+        id: 4,
+        petName: "Mascote 4",
+        service: "Tosa", 
+        time: "04:00 PM",
+        imageSource: require('../assets/cat1.png'),
+        status: "Concluída",
+        data: "16:00 | 04/02/2025",
+        sintomas: "Tosa de rotina para meu gato de pelo longo.",
+        localizacao: "R. Oscar Freire, 800 – Jardim Paulista, São Paulo – SP, 01426-000",
+        implementos: ["Tesoura", "Máquina de tosa", "Pente"]
+      }
+    ]
+  };
+
+  // Função para obter consultas de hoje
+  const getConsultasDeHoje = () => {
+    const hoje = new Date();
+    const hojeFormatado = `${hoje.getDate().toString().padStart(2, '0')}/${(hoje.getMonth() + 1).toString().padStart(2, '0')}/${hoje.getFullYear()}`;
+    
+    const todasConsultas = [
+      ...consultasData.Agendada,
+      ...consultasData.Andamento,
+      ...consultasData.Concluídas
+    ];
+    
+    return todasConsultas.filter(consulta => {
+      const partesData = consulta.data.split(' | ');
+      const dataConsulta = partesData[1]; // "DD/MM/YYYY"
+      return dataConsulta === hojeFormatado;
+    }).map(consulta => ({
+      id: consulta.id,
+      clienteNome: `Cliente ${consulta.id}`, // Simulação de nome de cliente
+      petNome: consulta.petName,
+      tipo: consulta.service,
+      descricao: `Consulta agendada para hoje às ${consulta.time}.`,
+      status: consulta.status === 'Agendada' ? 'pendente' : consulta.status.toLowerCase(),
+      imagem: consulta.imageSource
+    }));
+  };
+
+  const notificacoesVet = getConsultasDeHoje();
+
+  // Adicionar notificação da PrincipalScreen.jsx
+  const notificacaoPrincipalScreen = {
+    id: 99,
+    clienteNome: 'Cliente Principal',
+    petNome: 'Rex',
+    tipo: 'consulta de rotina',
+    descricao: 'Essa consulta esta completa.',
+    status: 'completo',
+    imagem: require('../assets/dog1.png'),
+    tipoNotificacao: 'consulta'
+  };
+
+  // Combinar notificações do veterinário com a notificação da tela principal
+  const todasNotificacoes = [...notificacoesVet, notificacaoPrincipalScreen];
 
   return (
     <View style={styles.container}>
@@ -95,12 +197,115 @@ const PrincipalVetScreen = () => {
       <View style={styles.notificacoesSection}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Notificações</Text>
-          <TouchableOpacity onPress={() => console.log('Ver Todas clicado')}>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Text style={styles.seeAllLink}>Ver Todas</Text>
           </TouchableOpacity>
         </View>
-        {/* Seção de notificações vazia */}
+        {/* Notificações reais da agenda do veterinário */}
+        {todasNotificacoes.length > 0 ? (
+          todasNotificacoes.slice(0, 2).map((notificacao) => (
+            <View key={notificacao.id} style={styles.notificationCard}>
+              <Image
+                source={notificacao.imagem}
+                style={styles.petImage}
+              />
+              <View style={styles.notificationInfo}>
+                <Text style={styles.petName}>{notificacao.petNome}</Text>
+                <Text style={styles.notificationType}>{notificacao.tipo}</Text>
+                <Text style={styles.notificationTime}>{notificacao.descricao}</Text>
+              </View>
+              <View style={[
+                styles.statusButton,
+                { 
+                  backgroundColor: notificacao.status === 'pendente' ? '#FFE8E8' : 
+                                  notificacao.status === 'completo' ? 'rgb(240, 240, 240)' : '#E8E0FF' 
+                }
+              ]}>
+                <Text style={[
+                  styles.statusButtonText,
+                  { 
+                    color: notificacao.status === 'pendente' ? '#FF6B6B' : 
+                            notificacao.status === 'completo' ? 'rgb(169, 169, 169)' : '#7F57F1' 
+                  }
+                ]}>
+                  {notificacao.status}
+                </Text>
+              </View>
+            </View>
+          ))
+        ) : (
+          <View style={styles.notificationCard}>
+            <View style={styles.notificationInfo}>
+              <Text style={styles.notificationTime}>Nenhuma consulta agendada para hoje.</Text>
+            </View>
+          </View>
+        )}
       </View>
+
+      {/* Modal de Notificações do Veterinário */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={modalStyles.modalContainer}>
+          <View style={modalStyles.modalContent}>
+            {/* Header do Modal */}
+            <View style={modalStyles.modalHeader}>
+              <Text style={modalStyles.modalTitle}>Notificações do Veterinário</Text>
+              <TouchableOpacity 
+                style={modalStyles.closeButton} 
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={modalStyles.closeButtonText}>✕</Text>
+              </TouchableOpacity>
+            </View>
+            
+            {/* Lista de Notificações */}
+            <ScrollView style={modalStyles.notificationList}>
+              {todasNotificacoes.length > 0 ? (
+                todasNotificacoes.map((notificacao) => (
+                  <View key={notificacao.id} style={modalStyles.notificationItem}>
+                    <Image
+                      source={notificacao.imagem}
+                      style={modalStyles.modalPetImage}
+                    />
+                    <View style={modalStyles.modalNotificationInfo}>
+                      <Text style={modalStyles.modalPetName}>{notificacao.petNome}</Text>
+                      <Text style={modalStyles.modalNotificationType}>{notificacao.tipo}</Text>
+                      <Text style={modalStyles.modalNotificationDesc}>{notificacao.descricao}</Text>
+                    </View>
+                    <View style={[
+                      modalStyles.modalStatusButton,
+                      { 
+                        backgroundColor: notificacao.status === 'pendente' ? '#FFE8E8' : 
+                                        notificacao.status === 'completo' ? 'rgb(240, 240, 240)' : '#E8E0FF' 
+                      }
+                    ]}>
+                      <Text style={[
+                        modalStyles.modalStatusText,
+                        { 
+                          color: notificacao.status === 'pendente' ? '#FF6B6B' : 
+                                  notificacao.status === 'completo' ? 'rgb(169, 169, 169)' : '#7F57F1' 
+                        }
+                      ]}>
+                        {notificacao.status}
+                      </Text>
+                    </View>
+                  </View>
+                ))
+              ) : (
+                <View style={modalStyles.emptyNotification}>
+                  <Text style={modalStyles.emptyNotificationText}>
+                    Nenhuma consulta agendada para hoje.
+                  </Text>
+                </View>
+              )}
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
 
 
       {/* O rodapé será removido e a navegação será gerenciada pelo Tab.Navigator em App.jsx */}
@@ -318,6 +523,125 @@ const getStyles = (colors) => ({
     alignItems: 'center',
     fontSize: 20,
     fontWeight: 'bold',
+  },
+});
+
+// Estilos do Modal
+const modalStyles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 24,
+    width: '90%',
+    maxHeight: '80%',
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E8E0FF',
+    paddingBottom: 15,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#3C3633',
+  },
+  closeButton: {
+    backgroundColor: '#F5F5F5',
+    borderRadius: 20,
+    width: 32,
+    height: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  closeButtonText: {
+    fontSize: 18,
+    color: '#7D7C7C',
+    fontWeight: 'bold',
+  },
+  notificationList: {
+    maxHeight: '70%',
+  },
+  notificationItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: 'rgb(199, 157, 253)',
+  },
+  modalPetImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 12,
+    marginRight: 12,
+  },
+  modalNotificationInfo: {
+    flex: 1,
+    marginRight: 10,
+  },
+  modalPetName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#3C3633',
+    marginBottom: 2,
+  },
+  modalNotificationType: {
+    fontSize: 14,
+    color: '#7F57F1',
+    fontWeight: '600',
+    marginBottom: 2,
+  },
+  modalNotificationDesc: {
+    fontSize: 12,
+    color: '#7D7C7C',
+    marginBottom: 4,
+  },
+  modalClientName: {
+    fontSize: 11,
+    color: '#9E9E9E',
+    fontStyle: 'italic',
+  },
+  modalStatusButton: {
+    borderRadius: 8,
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    minWidth: 70,
+    alignItems: 'center',
+  },
+  modalStatusText: {
+    fontSize: 11,
+    fontWeight: 'bold',
+    textTransform: 'capitalize',
+  },
+  emptyNotification: {
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyNotificationText: {
+    fontSize: 14,
+    color: '#7D7C7C',
+    textAlign: 'center',
   },
 });
 
