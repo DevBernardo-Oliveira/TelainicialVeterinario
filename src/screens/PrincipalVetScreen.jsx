@@ -120,15 +120,39 @@ const PrincipalVetScreen = () => {
     id: 99,
     clienteNome: 'Cliente Principal',
     petNome: 'Rex',
-    tipo: 'consulta de rotina',
-    descricao: 'Essa consulta esta completa.',
-    status: 'completo',
+    tipo: 'exame de sangue',
+    descricao: 'esta consulta esta agendada',
+    status: 'agendada',
     imagem: require('../assets/dog1.png'),
-    tipoNotificacao: 'consulta'
+    tipoNotificacao: 'consulta',
+      cor: 'rgb(255, 0, 0)'
   };
 
+  const notificacoesExtras = [
+    {
+      id: 100,
+      clienteNome: 'Cliente Principal 2',
+      petNome: 'Buddy',
+      tipo: 'consulta de rotina',
+      descricao: 'consulta em andamento',
+      status: 'andamento',
+      imagem: require('../assets/dog2.png'),
+      tipoNotificacao: 'consulta'
+    },
+    {
+      id: 101,
+      clienteNome: 'Cliente Principal 3',
+      petNome: 'Thor',
+      tipo: 'consulta de rotina',
+      descricao: 'Essa consulta esta completa.',
+      status: 'completo',
+      imagem: require('../assets/cat1.png'),
+      tipoNotificacao: 'consulta'
+    }
+  ];
+
   // Combinar notificações do veterinário com a notificação da tela principal
-  const todasNotificacoes = [...notificacoesVet, notificacaoPrincipalScreen];
+  const todasNotificacoes = [...notificacoesVet, notificacaoPrincipalScreen, ...notificacoesExtras];
 
   return (
     <View style={styles.container}>
@@ -218,6 +242,7 @@ const PrincipalVetScreen = () => {
                 styles.statusButton,
                 { 
                   backgroundColor: notificacao.status === 'pendente' ? '#FFE8E8' : 
+                                  notificacao.status === 'andamento' ? 'rgb(255, 232, 232)' : 
                                   notificacao.status === 'completo' ? 'rgb(240, 240, 240)' : '#E8E0FF' 
                 }
               ]}>
@@ -225,6 +250,7 @@ const PrincipalVetScreen = () => {
                   styles.statusButtonText,
                   { 
                     color: notificacao.status === 'pendente' ? '#FF6B6B' : 
+                            notificacao.status === 'andamento' ? 'rgb(255, 107, 107)' : 
                             notificacao.status === 'completo' ? 'rgb(169, 169, 169)' : '#7F57F1' 
                   }
                 ]}>
@@ -280,6 +306,7 @@ const PrincipalVetScreen = () => {
                       modalStyles.modalStatusButton,
                       { 
                         backgroundColor: notificacao.status === 'pendente' ? '#FFE8E8' : 
+                                        notificacao.status === 'andamento' ? 'rgb(255, 232, 232)' : 
                                         notificacao.status === 'completo' ? 'rgb(240, 240, 240)' : '#E8E0FF' 
                       }
                     ]}>
@@ -287,6 +314,7 @@ const PrincipalVetScreen = () => {
                         modalStyles.modalStatusText,
                         { 
                           color: notificacao.status === 'pendente' ? '#FF6B6B' : 
+                                  notificacao.status === 'andamento' ? 'rgb(255, 107, 107)' : 
                                   notificacao.status === 'completo' ? 'rgb(169, 169, 169)' : '#7F57F1' 
                         }
                       ]}>

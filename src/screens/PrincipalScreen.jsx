@@ -51,8 +51,8 @@ const PrincipalScreen = () => {
       id: 3,
       petNome: 'Cachorro',
       tipo: 'Check-up',
-      descricao: 'Consulta agendada.',
-      status: 'agendado',
+      descricao: 'Consulta agendando.',
+      status: 'agendando',
       imagem: require('../assets/pet.png')
     }
   ];
@@ -145,7 +145,7 @@ const PrincipalScreen = () => {
                   ? '#E8E0FF' 
                   : notificacao.status === 'andamento' 
                   ? '#FFE8E8' 
-                  : '#E0F7FF' // Cor para 'agendado'
+                  : 'rgb(240, 240, 240)' // Cor para 'agendado'
               }
             ]}>
               <Text style={[
@@ -155,7 +155,7 @@ const PrincipalScreen = () => {
                     ? colors.primary 
                     : notificacao.status === 'andamento' 
                     ? '#FF6B6B' 
-                    : '#03A9F4' // Cor para 'agendado'
+                    : 'rgb(169, 169, 169)' // Cor para 'agendado'
                 }
               ]}>
                 {notificacao.status}
@@ -205,7 +205,7 @@ const PrincipalScreen = () => {
                         ? '#E8E0FF' 
                         : notificacao.status === 'andamento' 
                         ? '#FFE8E8' 
-                        : '#E0F7FF' // Cor para 'agendado'
+                        : 'rgb(240, 240, 240)' // Cor para 'agendado'
                     }
                   ]}>
                     <Text style={[
@@ -215,7 +215,7 @@ const PrincipalScreen = () => {
                           ? '#7F57F1' 
                           : notificacao.status === 'andamento' 
                           ? '#FF6B6B' 
-                          : '#03A9F4' // Cor para 'agendado'
+                          : 'rgb(169, 169, 169)' // Cor para 'agendado'
                       }
                     ]}>
                       {notificacao.status}

@@ -60,7 +60,7 @@ const AgendaScreen = () => {
     textDayFontWeight: '600',
     textMonthFontWeight: '700',
     textDayHeaderFontWeight: '500',
-    textDayFontSize: 14,
+    textDayFontSize: 16,
     textMonthFontSize: 20,
     textDayHeaderFontSize: 12,
   }), []);
@@ -68,10 +68,30 @@ const AgendaScreen = () => {
   const renderDay = (day, marking) => {
     const dayStyle = [styles.dayContainer];
     const dayTextStyle = [styles.dayText];
+    const dayCircleStyle = [styles.dayCircle];
+
+    const isUrgent = marking?.consultation?.status === 'urgent';
+    const isCompleted = marking?.consultation?.status === 'completed' || marking?.completed === true;
+    const isScheduled = marking?.consultation?.status === 'scheduled';
 
     if (day.dateString === '2024-07-10') {
-      dayStyle.push(styles.highlightedDay);
+      dayCircleStyle.push(styles.highlightedDay);
       dayTextStyle.push(styles.highlightedDayText);
+    }
+
+    if (isUrgent) {
+      dayCircleStyle.push(styles.urgentDayCircle);
+      dayTextStyle.push(styles.urgentDayText);
+    }
+
+    if (isCompleted) {
+      dayCircleStyle.push(styles.completedDayCircle);
+      dayTextStyle.push(styles.completedDayText);
+    }
+
+    if (!isUrgent && !isCompleted && isScheduled) {
+      dayCircleStyle.push(styles.scheduledDayCircle);
+      dayTextStyle.push(styles.scheduledDayText);
     }
 
     return (
@@ -112,8 +132,10 @@ const AgendaScreen = () => {
           }
         }}
       >
-        <Text style={dayTextStyle}>{day.day}</Text>
-        {marking && marking.marked && (
+        <View style={dayCircleStyle}>
+          <Text style={dayTextStyle}>{day.day}</Text>
+        </View>
+        {marking && marking.marked && !isUrgent && !isCompleted && !isScheduled && (
           <View style={[styles.dot, { backgroundColor: marking.dotColor }]} />
         )}
       </TouchableOpacity>
@@ -325,18 +347,22 @@ const styles = StyleSheet.create({
   dayContainer: {
     flex: 1,
     aspectRatio: 1,
-    // width: 40,
-    // height: 40,
-    borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.white, // Células brancas
     marginHorizontal: 2,
     marginVertical: 2,
   },
+  dayCircle: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.white,
+  },
   dayText: {
     color: Colors.mediumPurple, // Números roxos
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '500',
     textAlign: 'center',
   },
@@ -346,11 +372,30 @@ const styles = StyleSheet.create({
   highlightedDayText: {
     color: Colors.darkHighlightPurple, // Roxo mais escuro para destaque
   },
+  urgentDayCircle: {
+    backgroundColor: '#FF0000',
+  },
+  urgentDayText: {
+    color: Colors.white,
+  },
+  completedDayCircle: {
+    backgroundColor: Colors.gray,
+  },
+  completedDayText: {
+    color: Colors.white,
+  },
+  scheduledDayCircle: {
+    backgroundColor: Colors.mediumPurple,
+  },
+  scheduledDayText: {
+    color: Colors.white,
+  },
   dot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    marginTop: 2,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginTop: 4,
+    alignSelf: 'center',
   },
   modalOverlay: {
     flex: 1,
