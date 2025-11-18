@@ -36,7 +36,7 @@ export default function App() {
           <RootStack.Screen name="Login" component={LoginScreen} />
           <RootStack.Screen name="Cadastro" component={CadastroScreen} />
           <RootStack.Screen name="UserMainApp" component={UserMainApp} />
-          <RootStack.Screen name="VeterinarianMainApp" component={VeterinarianMainApp} />
+                    <RootStack.Screen name="VeterinarianMainApp" component={VeterinarianMainApp} />
         </RootStack.Navigator>
       </NavigationContainer>
     </ChatProvider>

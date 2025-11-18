@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { View, Image, StyleSheet, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Image, StyleSheet, Text, TextInput, TouchableOpacity, Alert, Modal } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useRoute } from '@react-navigation/native'; // Importe o hook de navegação
 import { Colors, CommonStyles } from '../Utils/Theme';
 
@@ -8,23 +9,68 @@ const LoginScreen = () => {
   const route = useRoute();
   const [userType, setUserType] = useState(route.params?.userType || 'usuario'); // 'usuario' ou 'veterinario'
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+    const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    const loadCredentials = async () => {
+      try {
+        const savedCredentials = await AsyncStorage.getItem('userCredentials');
+        if (savedCredentials) {
+          const { email, password } = JSON.parse(savedCredentials);
+          setEmail(email);
+          setPassword(password);
+          setRememberMe(true);
+        }
+      } catch (e) {
+        console.error('Failed to load credentials', e);
+      }
+    };
+
+    loadCredentials();
+  }, []);
 
   const handleBackPress = () => {
     navigation.navigate('Inicial'); // Volta para a tela inicial
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert('Erro', 'Por favor, preencha o email e a senha.');
       return;
     }
+
+    try {
+      if (rememberMe) {
+        await AsyncStorage.setItem('userCredentials', JSON.stringify({ email, password }));
+      } else {
+        await AsyncStorage.removeItem('userCredentials');
+      }
+    } catch (e) {
+      console.error('Failed to save credentials', e);
+      Alert.alert('Erro', 'Não foi possível salvar as informações de login.');
+    }
+
     // Lógica de autenticação aqui
     if (userType === 'usuario') {
       navigation.navigate('UserMainApp');
     } else if (userType === 'veterinario') {
       navigation.navigate('VeterinarianMainApp');
     }
+  };
+
+  const handlePasswordReset = () => {
+    if (!resetEmail) {
+      Alert.alert('Erro', 'Por favor, insira seu e-mail.');
+      return;
+    }
+    // Lógica para enviar o e-mail de redefinição de senha
+    Alert.alert('Sucesso', 'Um e-mail de redefinição de senha foi enviado para ' + resetEmail);
+    setModalVisible(false);
+    setResetEmail('');
   };
 
   return (
@@ -85,24 +131,37 @@ const LoginScreen = () => {
         {/* Campo de Senha */}
         <View style={styles.formGroup}>
           <Text style={styles.label}>Password</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Senha"
-            placeholderTextColor={Colors.lightPurple}
-            secureTextEntry
-            maxLength={15} // Limit password to 15 characters
-            value={password}
-            onChangeText={setPassword}
-          />
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={styles.passwordInput}
+              placeholder="Senha"
+              placeholderTextColor={Colors.lightPurple}
+              secureTextEntry={!showPassword}
+              maxLength={15} // Limit password to 15 characters
+              value={password}
+              onChangeText={setPassword}
+            />
+            <TouchableOpacity
+              style={styles.eyeIcon}
+              onPress={() => setShowPassword(!showPassword)}
+            >
+              <Image
+                source={showPassword ? require('../assets/olhoaberto.png') : require('../assets/olhofechado.png')}
+                style={{ width: 24, height: 24, tintColor: Colors.darkGray }}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
 
         {/* Lembre-me e Esqueci a Senha */}
         <View style={styles.rememberForgotContainer}>
           <View style={styles.rememberMeContainer}>
-            <TouchableOpacity style={styles.checkbox}></TouchableOpacity>
+                        <TouchableOpacity style={styles.checkbox} onPress={() => setRememberMe(!rememberMe)}>
+              {rememberMe && <Text style={styles.checkboxX}>X</Text>}
+            </TouchableOpacity>
             <Text style={styles.rememberMeText}>Lembre-me</Text>
           </View>
-          <TouchableOpacity>
+                    <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Text style={styles.forgotPasswordText}>Esqueci a Senha</Text>
           </TouchableOpacity>
         </View>
@@ -117,6 +176,46 @@ const LoginScreen = () => {
           <Text style={styles.backButtonText}>Voltar</Text>
         </TouchableOpacity>
       </View>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalTitle}>Esqueceu sua senha?</Text>
+            <Text style={styles.modalSubtitle}>
+              Não se preocupe! Insira seu e-mail abaixo para receber um link de redefinição.
+            </Text>
+            <TextInput
+              style={styles.modalInput}
+              placeholder="seuemail@exemplo.com"
+              placeholderTextColor={Colors.lightPurple}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              value={resetEmail}
+              onChangeText={setResetEmail}
+            />
+            <TouchableOpacity
+              style={[styles.modalButton, styles.modalButtonPrimary]}
+              onPress={handlePasswordReset}
+            >
+              <Text style={styles.modalButtonText}>Redefinir Senha</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.modalButton, styles.modalButtonSecondary]}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text style={[styles.modalButtonText, styles.modalButtonTextSecondary]}>Cancelar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
     </View>
   );
 };
@@ -170,6 +269,93 @@ const styles = StyleSheet.create({
     color: Colors.bluePurple,
     fontWeight: '600',
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalView: {
+    width: '90%',
+    maxWidth: 400,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 25,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  modalTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: Colors.purple,
+    marginBottom: 10,
+  },
+  modalSubtitle: {
+    fontSize: 16,
+    color: Colors.darkGray,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  modalInput: {
+    width: '100%',
+    height: 50,
+    backgroundColor: Colors.veryLightPurple,
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: Colors.lightPurple,
+    marginBottom: 20,
+  },
+  modalButton: {
+    width: '100%',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  modalButtonPrimary: {
+    backgroundColor: Colors.bluePurple,
+  },
+  modalButtonSecondary: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: Colors.lightPurple,
+  },
+  modalButtonText: {
+    color: Colors.white,
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  modalButtonTextSecondary: {
+    color: Colors.bluePurple,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  buttonClose: {
+    backgroundColor: Colors.bluePurple,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize: 18,
+  },
   userTypeButtonTextActive: {
     color: Colors.white,
   },
@@ -202,6 +388,26 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.lightPurple,
   },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    height: 50,
+    backgroundColor: Colors.veryLightPurple,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: Colors.lightPurple,
+  },
+  passwordInput: {
+    flex: 1,
+    height: '100%',
+    paddingHorizontal: 15,
+    fontSize: 16,
+    color: Colors.darkGray,
+  },
+  eyeIcon: {
+    padding: 10,
+  },
   rememberForgotContainer: {
     width: '100%',
     flexDirection: 'row',
@@ -220,10 +426,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.lightPurple,
     marginRight: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   rememberMeText: {
     fontSize: 14,
     color: Colors.purple,
+  },
+  checkboxX: {
+    fontSize: 14,
+    color: Colors.bluePurple,
+    fontWeight: 'bold',
   },
   forgotPasswordText: {
     fontSize: 14,
