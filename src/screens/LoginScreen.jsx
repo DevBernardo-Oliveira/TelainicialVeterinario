@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { View, Image, StyleSheet, Text, TextInput, TouchableOpacity, Alert, Modal } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation, useRoute } from '@react-navigation/native'; // Importe o hook de navegação
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Colors, CommonStyles } from '../Utils/Theme';
 
 const LoginScreen = () => {
-  const navigation = useNavigation(); // Obtenha o objeto de navegação
+  const navigation = useNavigation();
   const route = useRoute();
-  const [userType, setUserType] = useState(route.params?.userType || 'usuario'); // 'usuario' ou 'veterinario'
+  const [userType, setUserType] = useState(route.params?.userType || 'usuario');
   const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+  const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
@@ -34,12 +34,12 @@ const LoginScreen = () => {
   }, []);
 
   const handleBackPress = () => {
-    navigation.navigate('Inicial'); // Volta para a tela inicial
+    navigation.navigate('Inicial');
   };
 
   const handleLogin = async () => {
-    if (!email || !password) {
-      Alert.alert('Erro', 'Por favor, preencha o email e a senha.');
+    if (!email || !password || !email.includes('@') || !email.includes('.')) {
+      Alert.alert('Erro', 'Por favor, preencha o email e a senha corretamente.');
       return;
     }
 
@@ -54,7 +54,6 @@ const LoginScreen = () => {
       Alert.alert('Erro', 'Não foi possível salvar as informações de login.');
     }
 
-    // Lógica de autenticação aqui
     if (userType === 'usuario') {
       navigation.navigate('UserMainApp');
     } else if (userType === 'veterinario') {
@@ -67,7 +66,6 @@ const LoginScreen = () => {
       Alert.alert('Erro', 'Por favor, insira seu e-mail.');
       return;
     }
-    // Lógica para enviar o e-mail de redefinição de senha
     Alert.alert('Sucesso', 'Um e-mail de redefinição de senha foi enviado para ' + resetEmail);
     setModalVisible(false);
     setResetEmail('');
@@ -75,16 +73,12 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* Imagem de fundo que ocupa a tela inteira */}
       <Image
         source={require('../assets/Vector.png')}
         style={styles.fullScreenImage}
         accessibilityLabel="Desenho de uma pessoa com um gato"
       />
-
-      {/* O container de login completo sobre a imagem */}
       <View style={styles.loginContainer}>
-        {/* Botões de seleção de tipo de usuário */}
         <View style={styles.userTypeContainer}>
           <TouchableOpacity
             style={[styles.userTypeButton, userType === 'usuario' && styles.userTypeButtonActive]}
@@ -104,16 +98,14 @@ const LoginScreen = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Logo Pet Vita agora é uma imagem */}
         <View style={styles.logoContainer}>
           <Image
-            source={require('../assets/petvita2.png')} // Caminho da nova imagem
+            source={require('../assets/petvita2.png')}
             style={styles.logoImage}
             accessibilityLabel="Logo Pet Vita com desenhos de um cachorro e um gato"
           />
         </View>
 
-        {/* Campo de Email */}
         <View style={styles.formGroup}>
           <Text style={styles.label}>Email</Text>
           <TextInput
@@ -121,14 +113,13 @@ const LoginScreen = () => {
             placeholder="Exemplo@gmail.com"
             placeholderTextColor={Colors.lightPurple}
             keyboardType="email-address"
-            maxLength={40} // Limit email to 40 characters
+            maxLength={40}
             autoCapitalize="none"
             value={email}
             onChangeText={setEmail}
           />
         </View>
 
-        {/* Campo de Senha */}
         <View style={styles.formGroup}>
           <Text style={styles.label}>Password</Text>
           <View style={styles.passwordContainer}>
@@ -137,7 +128,7 @@ const LoginScreen = () => {
               placeholder="Senha"
               placeholderTextColor={Colors.lightPurple}
               secureTextEntry={!showPassword}
-              maxLength={15} // Limit password to 15 characters
+              maxLength={15}
               value={password}
               onChangeText={setPassword}
             />
@@ -153,25 +144,22 @@ const LoginScreen = () => {
           </View>
         </View>
 
-        {/* Lembre-me e Esqueci a Senha */}
         <View style={styles.rememberForgotContainer}>
           <View style={styles.rememberMeContainer}>
-                        <TouchableOpacity style={styles.checkbox} onPress={() => setRememberMe(!rememberMe)}>
+            <TouchableOpacity style={styles.checkbox} onPress={() => setRememberMe(!rememberMe)}>
               {rememberMe && <Text style={styles.checkboxX}>X</Text>}
             </TouchableOpacity>
             <Text style={styles.rememberMeText}>Lembre-me</Text>
           </View>
-                    <TouchableOpacity onPress={() => setModalVisible(true)}>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Text style={styles.forgotPasswordText}>Esqueci a Senha</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Botão Entrar */}
         <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
           <Text style={styles.loginButtonText}>Entrar</Text>
         </TouchableOpacity>
 
-        {/* Botão Voltar */}
         <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
           <Text style={styles.backButtonText}>Voltar</Text>
         </TouchableOpacity>
