@@ -7,7 +7,7 @@ import {
   Poppins_700Bold,
 } from '@expo-google-fonts/poppins';
 import { Geologica_700Bold } from '@expo-google-fonts/geologica';
-import LoginScreen from './src/screens/LoginScreen';
+import LoginScreen from './src/screens/LoginScreenNew';
 import CadastroScreen from './src/screens/CadastroScreen';
 import InicialScreen from './src/screens/InicialScreen';
 import { ChatProvider } from './src/context/ChatContext';
